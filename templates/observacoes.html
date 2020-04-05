@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %}Painel da produção | Editar ordem{% endblock %}
+
+{% block content %}
+	{% if item %}
+		<div class="container">
+			<div class="jumbotron">
+				<h1>Edição de ordem:</h1>
+				<br>
+				<form class="form-inline my-2 my-lg-0" method="POST">
+				    {% csrf_token %}
+				    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.observacoes }}" 
+				    	value="{{ item.observacoes }}" aria-label="Search" name="observacoes">
+
+		     		<input type=hidden value="{{ item.tipo }}" name="tipo">
+		     		
+		     		<input type=hidden value="{{ item.cor }}" name="cor">	    	
+
+		     		<input type=hidden value="{{ item.tamanho }}" name="tamanho">
+
+				      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Editar</button>
+				</form>
+			</div>
+		</div>
+
+	{% endif %}
+
+
+{% endblock %}

@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block title %}Painel da produção | Editar ordem{% endblock %}
+
+{% block content %}
+<br>
+	{% if item %}
+		<div class="container">
+			<div class="jumbotron color">
+				<h1>Edição de ordem</h1>
+				<br>
+				<form class="form-group col-md-5 mb-0" method="POST">
+				    {% csrf_token %}
+				    	<label for="exampleFormControlInput1">Tipo:</label>
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.tipo }}" 
+						    	value="{{ item.tipo }}" aria-label="Search" name="tipo">
+
+						<label for="exampleFormControlInput1">Cor:</label>    		
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.cor }}" 
+						    	value="{{ item.cor }}" aria-label="Search" name="cor">
+
+						<label for="exampleFormControlInput1">Tamanho:</label>
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.tamanho }}" 
+						    	value="{{ item.tamanho }}" aria-label="Search" name="tamanho">
+
+						<label for="exampleFormControlInput1">Quantidade:</label>
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.quantidade }}" 
+						    	value="{{ item.quantidade }}" aria-label="Search" name="quantidade">
+
+						<label for="exampleFormControlInput1">Observações:</label>
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.observacoes }}" 
+						    	value="{{ item.observacoes }}" aria-label="Search" name="observacoes">
+
+						<label for="exampleFormControlInput1">Preço:</label>
+						    <input class="form-control mr-sm-2" type="search" placeholder="{{ item.preco }}" 
+						    	value="{{ item.preco }}" aria-label="Search" name="preco">
+				     		<br>
+				     	
+						      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Editar</button>
+				</form>
+			</div>
+		</div>
+
+	{% endif %}
+
+
+{% endblock %}

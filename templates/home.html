@@ -1,0 +1,213 @@
+{% extends 'base.html' %}
+
+{% load bootstrap %}
+
+{% block content %}
+
+<div class="container">
+	<div class="jumbotron">
+		<h1>Adicionar Camiseta ao Pedido</h1>
+		<br>
+		<form method='POST'>
+			{% csrf_token %}
+			<div class="form-row">
+				<div class="form-group col-md-5 mb-0">
+					{{ form.tipo|bootstrap }}
+				</div>
+				<div class="form-group col-md-3 mb-0">
+					{{ form.cor|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.tamanho|bootstrap }}
+				</div>
+				<div class="form-group col-md-1 mb-0">
+					{{ form.quantidade|bootstrap }}
+				</div>	
+			</div>
+				<input type='submit' class="btn btn-success" value='Adicionar' />
+		</form>
+	</div>
+</div>
+
+{% if messages %}
+	{% for message in messages %}
+		<div class="container">
+			<div class="alert alert-warning alert-dismissable" role="alert">
+				<button class="close" data-dismiss="alert">
+					<small><sup>x</sup></small>
+				</button>
+				{{ message }}
+			</div>
+		</div>
+	{% endfor %}
+{% endif %}
+
+<div class='container'>
+	<div class="jumbotron color">
+		<h1><center>Painel da Produção</center></h1>
+		<br>
+		<div class="table-responsive">
+			<table class= "table table-striped white w-auto" >
+			  <thead>
+			    <tr>
+			      <th scope="col"><center>Tipo de camiseta</center></th>
+			      <th scope="col"><center>Cor</center></th>
+			      <th scope="col"><center>Tamanho</center></th>
+			      <th scope="col"><center>Qnt</center></th>
+			      <th scope="col"><center>Edição</center></th>
+			      <th scope="col"><center>Estoque</center></th>
+			      <th scope="col"><center>Etiqueta</center></th>
+			      <th scope="col"><center>Estampa</center></th>
+			      <th scope="col"><center>Pronta Entrega</center></th>
+			      <th scope="col"><center>Excluir</center></th>
+			      <th scope="col"><center>Observações</center></th>
+			      <th scope="col"><center>Preço</center></th>
+			    </tr>
+			  </thead>
+				<tbody>
+					{% for item in all_items %}
+						{% if item.estoque and item.etiquetada == False and item.estampada == False %}
+							<tr>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+						{% elif item.estoque == False and item.etiquetada and item.estampada == False %}
+							<tr tr class= "table-warning">
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+						{% elif item.estoque == False and item.etiquetada == False and item.estampada %}
+							<tr class= "table-warning">
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+						{% elif item.estoque and item.etiquetada and item.estampada == False %}
+							<tr>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+						{% elif item.estoque == False and item.etiquetada and item.estampada %}
+							<tr class= "table-danger">
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+							{% elif item.estoque and item.etiquetada == False and item.estampada %}
+							<tr>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr >
+							{% elif item.estoque and item.etiquetada and item.estampada %}
+							<tr class= "table-success">
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td>
+							</tr>
+							{% elif item.estoque == False and item.etiquetada == False and item.estampada == False and item.pronta_entrega == False %}
+							<tr>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td> 		
+							</tr>
+							{% elif item.estoque == False and item.etiquetada == False and item.estampada == False and item.pronta_entrega == True %}
+							<tr>
+								<td><center>{{ item.tipo }}</center></td>
+								<td><center>{{ item.cor }}</center></td>
+								<td><center>{{ item.tamanho }}</center></td>
+								<td><center>{{ item.quantidade }}</center></td>
+								<td><center><a class="btn btn-primary" href = "{% url 'edit' item.id  %}" role="button">-</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estoque' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_etiquetada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-secondary none" href = "{% url 'verificar_estampada' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-success" href = "{% url 'pronta_entrega' item.id  %}" role="button">✓</a></center>
+								<td><center><a class="btn btn-danger" href = "{% url 'delete' item.id  %}" role="button">X</a></center></td>
+								<td><center>{{ item.observacoes }}</center></td>
+								<td><center>{{ item.preco }}</center></td> 		
+							</tr>
+						{% endif %}
+					{% endfor %}
+				</tbody>
+			</table>
+		</div>
+	</div>
+</div>
+
+{% endblock %}
